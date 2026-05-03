@@ -7,19 +7,30 @@ import AgentPanel from "@/components/AgentPanel";
 import FutureScenarioPanel from "@/components/FutureScenarioPanel";
 import ReportPanel from "@/components/ReportPanel";
 import ErrorBanner from "@/components/ErrorBanner";
-
-// TODO: Replace with real state from CopilotKit agent events.
-// For now, all panels render in their empty/waiting state so we can
-// verify the layout and component rendering.
+import { usePipelineState } from "@/hooks/usePipelineState";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8008";
 
 export default function Home() {
   const [backendError, setBackendError] = useState<string | null>(null);
 
+  const {
+    captainBriefing,
+    captainBriefingStatus,
+    optimistOutput,
+    optimistStatus,
+    realistOutput,
+    realistStatus,
+    riskAnalystOutput,
+    riskAnalystStatus,
+    scenarios,
+    scenarioStatus,
+    reporterOutput,
+    reportStatus,
+  } = usePipelineState();
+
   useEffect(() => {
     fetch("/api/copilotkit", { method: "HEAD" }).catch(() => {
-      // HEAD will 405 if the route is up but backend is down — try healthz
       fetch(`${BACKEND_URL}/healthz`)
         .then((r) => {
           if (!r.ok) throw new Error();
@@ -68,50 +79,86 @@ export default function Home() {
       {/* Main split layout */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left: Chat */}
-        <div className="w-[420px] min-w-[360px] flex-shrink-0">
+        <div className="w-[420px] min-w-[360px] flex-shrink-0 overflow-y-auto">
           <ChatInterface />
         </div>
 
         {/* Right: Scrollable panels */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-zinc-50 dark:bg-zinc-900">
           {/* Captain Briefing */}
-          <CaptainBriefingPanel data={null} status="waiting" />
+          <CaptainBriefingPanel
+            data={captainBriefing}
+            status={captainBriefingStatus}
+          />
 
           {/* Three specialists side by side */}
           <div className="grid grid-cols-3 gap-4">
             <AgentPanel
               title="Optimist"
               color="bg-emerald-500"
-              status="waiting"
-              summary={null}
-              sections={[]}
+              status={optimistStatus}
+              summary={optimistOutput?.summary ?? null}
+              sections={
+                optimistOutput
+                  ? [
+                      { label: "Best Case Future", items: [optimistOutput.best_case_future] },
+                      { label: "Positive Signals", items: optimistOutput.positive_signals },
+                      { label: "Growth Opportunities", items: optimistOutput.growth_opportunities },
+                      { label: "Conditions for Success", items: optimistOutput.conditions_needed_for_success },
+                      { label: "Questions to Consider", items: optimistOutput.encouraging_questions },
+                    ]
+                  : []
+              }
             />
             <AgentPanel
               title="Realist"
               color="bg-blue-500"
-              status="waiting"
-              summary={null}
-              sections={[]}
+              status={realistStatus}
+              summary={realistOutput?.summary ?? null}
+              sections={
+                realistOutput
+                  ? [
+                      { label: "Most Likely Future", items: [realistOutput.most_likely_future] },
+                      { label: "Practical Considerations", items: realistOutput.practical_considerations },
+                      { label: "Tradeoffs", items: realistOutput.tradeoffs },
+                      { label: "Open Questions", items: realistOutput.open_questions },
+                      { label: "Near-Term Actions", items: realistOutput.near_term_actions },
+                    ]
+                  : []
+              }
             />
             <AgentPanel
               title="Risk Analyst"
               color="bg-amber-500"
-              status="waiting"
-              summary={null}
-              sections={[]}
+              status={riskAnalystStatus}
+              summary={riskAnalystOutput?.summary ?? null}
+              sections={
+                riskAnalystOutput
+                  ? [
+                      { label: "Major Risks", items: riskAnalystOutput.major_risks },
+                      { label: "Red Flags", items: riskAnalystOutput.red_flags },
+                      { label: "Hidden Costs", items: riskAnalystOutput.hidden_costs },
+                      { label: "Risk Mitigation", items: riskAnalystOutput.risk_mitigation_steps },
+                      { label: "Stop Signals", items: riskAnalystOutput.stop_signals },
+                    ]
+                  : []
+              }
             />
           </div>
 
           {/* Four scenarios in 2x2 grid */}
           <div className="grid grid-cols-2 gap-4">
-            <FutureScenarioPanel data={null} status="waiting" />
-            <FutureScenarioPanel data={null} status="waiting" />
-            <FutureScenarioPanel data={null} status="waiting" />
-            <FutureScenarioPanel data={null} status="waiting" />
+            {scenarios.map((scenario, i) => (
+              <FutureScenarioPanel
+                key={i}
+                data={scenario}
+                status={scenario ? "complete" : scenarioStatus}
+              />
+            ))}
           </div>
 
           {/* Final report */}
-          <ReportPanel data={null} status="waiting" />
+          <ReportPanel data={reporterOutput} status={reportStatus} />
         </div>
       </div>
     </div>

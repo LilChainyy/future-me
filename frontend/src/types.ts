@@ -58,6 +58,10 @@ export interface FutureScenario {
   advice_from_future_self: string[];
 }
 
+export interface FutureSelfOutput {
+  scenarios: FutureScenario[];
+}
+
 export interface ReporterOutput {
   executive_summary: string;
   original_question: string;
@@ -72,4 +76,20 @@ export interface ReporterOutput {
   recommended_next_steps: string[];
   questions_to_reflect_on: string[];
   final_note: string;
+}
+
+export interface PipelineState {
+  current_step:
+    | "gathering"
+    | "specialists"
+    | "future_self"
+    | "reporter"
+    | "complete";
+  active_agents: string[];
+  captain_briefing: CaptainBriefing | null;
+  optimist_output: OptimistOutput | null;
+  realist_output: RealistOutput | null;
+  risk_analyst_output: RiskAnalystOutput | null;
+  future_self_output: FutureSelfOutput | null;
+  reporter_output: ReporterOutput | null;
 }

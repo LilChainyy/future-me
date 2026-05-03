@@ -1,5 +1,16 @@
 agent.py
 pyproject.toml
+backend/__init__.py
+backend/agents.py
+backend/config.py
+backend/main.py
+backend/models.py
+backend/prompts.py
+backend/server.py
+backend/test_future_self.py
+backend/test_optimist.py
+backend/test_reporter.py
+backend/test_specialists.py
 future_me.egg-info/PKG-INFO
 future_me.egg-info/SOURCES.txt
 future_me.egg-info/dependency_links.txt

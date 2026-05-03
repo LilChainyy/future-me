@@ -13,6 +13,7 @@ lead_config = OpenAIConfig(
     streaming=True,
     api_key=_api_key,
     base_url=_base_url,
+    max_completion_tokens=16384,
 )
 
 worker_config = OpenAIConfig(
