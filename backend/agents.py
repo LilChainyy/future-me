@@ -8,22 +8,17 @@ from autogen.beta.annotations import Context
 from autogen.beta.tools.final import tool
 from autogen.beta.tools.subagents import subagent_tool
 
-from .config import lead_config, worker_config
+from .config import lead_config
 from .models import (
     CaptainBriefing,
     FutureSelfOutput,
-    OptimistOutput,
-    RealistOutput,
     ReporterOutput,
-    RiskAnalystOutput,
 )
+from .discussion import run_specialist_discussion
 from .prompts_captain import CAPTAIN_PROMPT
 from .prompts_specialists import (
     FUTURE_SELF_PROMPT,
-    OPTIMIST_PROMPT,
-    REALIST_PROMPT,
     REPORTER_PROMPT,
-    RISK_ANALYST_PROMPT,
 )
 from .state_middleware import make_state_middleware
 
@@ -73,6 +68,7 @@ async def save_briefing(
         "current_step": "gathering",
         "active_agents": [],
         "captain_briefing": None,
+        "discussion_transcript": [],
         "optimist_output": None,
         "realist_output": None,
         "risk_analyst_output": None,
@@ -89,29 +85,8 @@ async def save_briefing(
             )
         )
     )
-    return "Briefing saved. Now delegate to the specialist agents."
+    return "Briefing saved. Now call run_specialist_discussion with the full briefing text."
 
-
-optimist = Agent(
-    name="optimist",
-    prompt=OPTIMIST_PROMPT,
-    config=worker_config,
-    response_schema=OptimistOutput,
-)
-
-realist = Agent(
-    name="realist",
-    prompt=REALIST_PROMPT,
-    config=worker_config,
-    response_schema=RealistOutput,
-)
-
-risk_analyst = Agent(
-    name="risk_analyst",
-    prompt=RISK_ANALYST_PROMPT,
-    config=worker_config,
-    response_schema=RiskAnalystOutput,
-)
 
 future_self = Agent(
     name="future_self",
@@ -133,21 +108,7 @@ captain = Agent(
     config=lead_config,
     tools=[
         save_briefing,
-        subagent_tool(
-            optimist,
-            description="Delegate optimistic analysis of the user's decision.",
-            middleware=[make_state_middleware("task_optimist")],
-        ),
-        subagent_tool(
-            realist,
-            description="Delegate pragmatic/realistic analysis of the user's decision.",
-            middleware=[make_state_middleware("task_realist")],
-        ),
-        subagent_tool(
-            risk_analyst,
-            description="Delegate risk analysis of the user's decision.",
-            middleware=[make_state_middleware("task_risk_analyst")],
-        ),
+        run_specialist_discussion,
         subagent_tool(
             future_self,
             description="Generate four future-self simulations from the specialist analyses.",

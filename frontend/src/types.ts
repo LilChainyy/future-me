@@ -20,10 +20,7 @@ export interface OptimistOutput {
   summary: string;
   best_case_future: string;
   positive_signals: string[];
-  growth_opportunities: string[];
-  relationship_or_life_upside: string[];
   conditions_needed_for_success: string[];
-  encouraging_questions: string[];
 }
 
 export interface RealistOutput {
@@ -32,28 +29,20 @@ export interface RealistOutput {
   practical_considerations: string[];
   tradeoffs: string[];
   open_questions: string[];
-  near_term_actions: string[];
-  decision_checkpoints: string[];
 }
 
 export interface RiskAnalystOutput {
   summary: string;
   major_risks: string[];
-  red_flags: string[];
   hidden_costs: string[];
-  failure_modes: string[];
   risk_mitigation_steps: string[];
   stop_signals: string[];
-  professional_support_recommended: string[];
 }
 
 export interface FutureScenario {
   label: string;
   weights: Record<string, number>;
   future_self_letter: string;
-  what_life_feels_like: string;
-  likely_rewards: string[];
-  likely_regrets: string[];
   key_turning_points: string[];
   advice_from_future_self: string[];
 }
@@ -64,29 +53,32 @@ export interface FutureSelfOutput {
 
 export interface ReporterOutput {
   executive_summary: string;
-  original_question: string;
-  context_summary: string;
   optimist_summary: string;
   realist_summary: string;
   risk_summary: string;
-  scenario_comparison: string[];
   common_themes: string[];
-  major_uncertainties: string[];
   decision_framework: string[];
   recommended_next_steps: string[];
-  questions_to_reflect_on: string[];
   final_note: string;
+}
+
+export interface DiscussionMessage {
+  speaker: string;
+  round: number;
+  content: string;
 }
 
 export interface PipelineState {
   current_step:
     | "gathering"
     | "specialists"
+    | "discussion"
     | "future_self"
     | "reporter"
     | "complete";
   active_agents: string[];
   captain_briefing: CaptainBriefing | null;
+  discussion_transcript: DiscussionMessage[];
   optimist_output: OptimistOutput | null;
   realist_output: RealistOutput | null;
   risk_analyst_output: RiskAnalystOutput | null;

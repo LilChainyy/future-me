@@ -1,5 +1,6 @@
 import type { CaptainBriefing, AgentStatus } from "@/types";
 import StatusBadge from "./StatusBadge";
+import CollapsiblePanel from "./CollapsiblePanel";
 import BulletList from "./BulletList";
 
 interface Props {
@@ -26,25 +27,27 @@ export default function CaptainBriefingPanel({ data, status, error }: Props) {
           Waiting for context gathering...
         </p>
       ) : (
-        <div className="space-y-3">
-          <div>
-            <p className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-              &ldquo;{data.original_question}&rdquo;
+        <CollapsiblePanel>
+          <div className="space-y-3">
+            <div>
+              <p className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
+                &ldquo;{data.original_question}&rdquo;
+              </p>
+              <p className="text-xs text-zinc-500 mt-1">
+                Type: {data.decision_type}
+              </p>
+            </div>
+            <p className="text-sm text-zinc-700 dark:text-zinc-300">
+              {data.context_summary}
             </p>
-            <p className="text-xs text-zinc-500 mt-1">
-              Type: {data.decision_type}
-            </p>
+            <BulletList title="Values" items={data.user_values} />
+            <BulletList title="Hopes" items={data.hopes} />
+            <BulletList title="Fears" items={data.fears} />
+            <BulletList title="Constraints" items={data.constraints} />
+            <BulletList title="Red Flags" items={data.red_flags} />
+            <BulletList title="Missing Info" items={data.missing_information} />
           </div>
-          <p className="text-sm text-zinc-700 dark:text-zinc-300">
-            {data.context_summary}
-          </p>
-          <BulletList title="Values" items={data.user_values} />
-          <BulletList title="Hopes" items={data.hopes} />
-          <BulletList title="Fears" items={data.fears} />
-          <BulletList title="Constraints" items={data.constraints} />
-          <BulletList title="Red Flags" items={data.red_flags} />
-          <BulletList title="Missing Info" items={data.missing_information} />
-        </div>
+        </CollapsiblePanel>
       )}
     </div>
   );

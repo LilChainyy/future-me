@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import ChatInterface from "@/components/ChatInterface";
 import CaptainBriefingPanel from "@/components/CaptainBriefingPanel";
+import DiscussionPanel from "@/components/DiscussionPanel";
 import AgentPanel from "@/components/AgentPanel";
 import FutureScenarioPanel from "@/components/FutureScenarioPanel";
 import ReportPanel from "@/components/ReportPanel";
@@ -17,6 +18,9 @@ export default function Home() {
   const {
     captainBriefing,
     captainBriefingStatus,
+    activeAgents,
+    discussionTranscript,
+    discussionStatus,
     optimistOutput,
     optimistStatus,
     realistOutput,
@@ -91,7 +95,14 @@ export default function Home() {
             status={captainBriefingStatus}
           />
 
-          {/* Three specialists side by side */}
+          {/* Specialist Discussion */}
+          <DiscussionPanel
+            transcript={discussionTranscript}
+            status={discussionStatus}
+            activeAgents={activeAgents}
+          />
+
+          {/* Three specialists side by side (final structured outputs) */}
           <div className="grid grid-cols-3 gap-4">
             <AgentPanel
               title="Optimist"
@@ -103,9 +114,7 @@ export default function Home() {
                   ? [
                       { label: "Best Case Future", items: [optimistOutput.best_case_future] },
                       { label: "Positive Signals", items: optimistOutput.positive_signals },
-                      { label: "Growth Opportunities", items: optimistOutput.growth_opportunities },
                       { label: "Conditions for Success", items: optimistOutput.conditions_needed_for_success },
-                      { label: "Questions to Consider", items: optimistOutput.encouraging_questions },
                     ]
                   : []
               }
@@ -122,7 +131,6 @@ export default function Home() {
                       { label: "Practical Considerations", items: realistOutput.practical_considerations },
                       { label: "Tradeoffs", items: realistOutput.tradeoffs },
                       { label: "Open Questions", items: realistOutput.open_questions },
-                      { label: "Near-Term Actions", items: realistOutput.near_term_actions },
                     ]
                   : []
               }
@@ -136,7 +144,6 @@ export default function Home() {
                 riskAnalystOutput
                   ? [
                       { label: "Major Risks", items: riskAnalystOutput.major_risks },
-                      { label: "Red Flags", items: riskAnalystOutput.red_flags },
                       { label: "Hidden Costs", items: riskAnalystOutput.hidden_costs },
                       { label: "Risk Mitigation", items: riskAnalystOutput.risk_mitigation_steps },
                       { label: "Stop Signals", items: riskAnalystOutput.stop_signals },

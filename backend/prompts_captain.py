@@ -44,12 +44,13 @@ you've gathered — the user's question, decision type, context summary, key peo
 known facts, assumptions, values, hopes, fears, constraints, red flags, and any \
 missing information. This must be called BEFORE delegating to specialists.
 
-1. **Parallel step**: Call optimist, realist, and risk_analyst ALL IN THE SAME \
-TURN. Pass each one a briefing that includes the user's question, situation, \
-values, hopes, fears, and constraints. AG2 will run them concurrently.
+1. **Discussion step**: Call run_specialist_discussion with the full briefing text. \
+This runs a 2-round discussion between the Optimist, Realist, and Risk Analyst, \
+then produces their final structured analyses. The tool returns JSON containing \
+the discussion transcript and all three specialist outputs.
 
-2. **Future Self step**: After all three specialists return, call future_self \
-with the combined outputs from optimist, realist, and risk_analyst.
+2. **Future Self step**: After the discussion tool returns, call future_self \
+with both the discussion transcript and the structured specialist outputs.
 
 3. **Reporter step**: After future_self returns, call reporter with everything: \
 the user's original question, your context summary, all three specialist outputs, \

@@ -3,6 +3,7 @@
 import { useCoAgent } from "@copilotkit/react-core";
 import type {
   AgentStatus,
+  DiscussionMessage,
   FutureScenario,
   PipelineState,
 } from "@/types";
@@ -11,6 +12,7 @@ const INITIAL_STATE: PipelineState = {
   current_step: "gathering",
   active_agents: [],
   captain_briefing: null,
+  discussion_transcript: [],
   optimist_output: null,
   realist_output: null,
   risk_analyst_output: null,
@@ -46,6 +48,14 @@ export function usePipelineState() {
       ? "running"
       : "waiting";
 
+  const discussionTranscript: DiscussionMessage[] = ps.discussion_transcript ?? [];
+  const discussionStatus: AgentStatus =
+    ps.current_step === "discussion"
+      ? "running"
+      : discussionTranscript.length > 0
+        ? "complete"
+        : "waiting";
+
   const optimistStatus = deriveStatus(ps.optimist_output, ps.active_agents, "optimist");
   const realistStatus = deriveStatus(ps.realist_output, ps.active_agents, "realist");
   const riskAnalystStatus = deriveStatus(
@@ -78,8 +88,11 @@ export function usePipelineState() {
   return {
     pipelineState: ps,
     running,
+    activeAgents: ps.active_agents,
     captainBriefing: ps.captain_briefing,
     captainBriefingStatus,
+    discussionTranscript,
+    discussionStatus,
     optimistOutput: ps.optimist_output,
     optimistStatus,
     realistOutput: ps.realist_output,

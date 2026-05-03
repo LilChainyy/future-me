@@ -1,5 +1,6 @@
 import type { FutureScenario, AgentStatus } from "@/types";
 import StatusBadge from "./StatusBadge";
+import CollapsiblePanel from "./CollapsiblePanel";
 
 interface Props {
   data: FutureScenario | null;
@@ -63,78 +64,44 @@ export default function FutureScenarioPanel({ data, status, error }: Props) {
           Waiting for future simulation...
         </p>
       ) : (
-        <div className="space-y-3">
-          <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-1">
-              Letter from your future self
-            </h4>
-            <p className="text-sm text-zinc-700 dark:text-zinc-300 italic whitespace-pre-line">
-              {data.future_self_letter}
-            </p>
-          </div>
-
-          <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-1">
-              What life feels like
-            </h4>
-            <p className="text-sm text-zinc-700 dark:text-zinc-300">
-              {data.what_life_feels_like}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
+        <CollapsiblePanel>
+          <div className="space-y-3">
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400 mb-1">
-                Rewards
+              <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-1">
+                Letter from your future self
+              </h4>
+              <p className="text-sm text-zinc-700 dark:text-zinc-300 italic whitespace-pre-line">
+                {data.future_self_letter}
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-1">
+                Key turning points
               </h4>
               <ul className="space-y-1">
-                {data.likely_rewards.map((r, i) => (
+                {data.key_turning_points.map((t, i) => (
                   <li key={i} className="text-sm text-zinc-700 dark:text-zinc-300">
-                    &bull; {r}
+                    &bull; {t}
                   </li>
                 ))}
               </ul>
             </div>
+
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-400 mb-1">
-                Regrets
+              <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-1">
+                Advice from future self
               </h4>
               <ul className="space-y-1">
-                {data.likely_regrets.map((r, i) => (
-                  <li key={i} className="text-sm text-zinc-700 dark:text-zinc-300">
-                    &bull; {r}
+                {data.advice_from_future_self.map((a, i) => (
+                  <li key={i} className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                    &ldquo;{a}&rdquo;
                   </li>
                 ))}
               </ul>
             </div>
           </div>
-
-          <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-1">
-              Key turning points
-            </h4>
-            <ul className="space-y-1">
-              {data.key_turning_points.map((t, i) => (
-                <li key={i} className="text-sm text-zinc-700 dark:text-zinc-300">
-                  &bull; {t}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-1">
-              Advice from future self
-            </h4>
-            <ul className="space-y-1">
-              {data.advice_from_future_self.map((a, i) => (
-                <li key={i} className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
-                  &ldquo;{a}&rdquo;
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        </CollapsiblePanel>
       )}
     </div>
   );

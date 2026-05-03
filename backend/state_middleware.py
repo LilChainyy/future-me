@@ -11,18 +11,12 @@ from autogen.beta.middleware.base import ToolExecution, ToolResultType
 
 from .models import (
     FutureSelfOutput,
-    OptimistOutput,
-    RealistOutput,
     ReporterOutput,
-    RiskAnalystOutput,
 )
 
 logger = logging.getLogger("futureme.state")
 
 TOOL_CONFIG: dict[str, tuple[str, type, str]] = {
-    "task_optimist": ("optimist_output", OptimistOutput, "specialists"),
-    "task_realist": ("realist_output", RealistOutput, "specialists"),
-    "task_risk_analyst": ("risk_analyst_output", RiskAnalystOutput, "specialists"),
     "task_future_self": ("future_self_output", FutureSelfOutput, "future_self"),
     "task_reporter": ("reporter_output", ReporterOutput, "reporter"),
 }
@@ -31,6 +25,7 @@ _DEFAULT_STATE = {
     "current_step": "gathering",
     "active_agents": [],
     "captain_briefing": None,
+    "discussion_transcript": [],
     "optimist_output": None,
     "realist_output": None,
     "risk_analyst_output": None,
@@ -110,14 +105,11 @@ def make_state_middleware(tool_name: str):
                 )
 
         # Update step based on completion state
-        specialists = ["optimist_output", "realist_output", "risk_analyst_output"]
         if state.get("reporter_output"):
             state["current_step"] = "complete"
             state["active_agents"] = []
         elif state.get("future_self_output"):
             state["current_step"] = "reporter"
-        elif all(state.get(f) for f in specialists):
-            state["current_step"] = "future_self"
 
         await _emit_snapshot(ctx)
         return result

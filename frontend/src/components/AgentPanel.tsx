@@ -1,4 +1,5 @@
 import StatusBadge from "./StatusBadge";
+import CollapsiblePanel from "./CollapsiblePanel";
 import type { AgentStatus } from "@/types";
 
 interface Props {
@@ -34,29 +35,31 @@ export default function AgentPanel({
       ) : !summary ? (
         <p className="text-sm text-zinc-400 italic">Waiting for analysis...</p>
       ) : (
-        <div className="space-y-3">
-          <p className="text-sm text-zinc-700 dark:text-zinc-300">{summary}</p>
-          {sections.map(
-            (section) =>
-              section.items.length > 0 && (
-                <div key={section.label}>
-                  <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-1">
-                    {section.label}
-                  </h4>
-                  <ul className="space-y-1">
-                    {section.items.map((item, i) => (
-                      <li
-                        key={i}
-                        className="text-sm text-zinc-700 dark:text-zinc-300"
-                      >
-                        &bull; {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )
-          )}
-        </div>
+        <CollapsiblePanel>
+          <div className="space-y-3">
+            <p className="text-sm text-zinc-700 dark:text-zinc-300">{summary}</p>
+            {sections.map(
+              (section) =>
+                section.items.length > 0 && (
+                  <div key={section.label}>
+                    <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-1">
+                      {section.label}
+                    </h4>
+                    <ul className="space-y-1">
+                      {section.items.map((item, i) => (
+                        <li
+                          key={i}
+                          className="text-sm text-zinc-700 dark:text-zinc-300"
+                        >
+                          &bull; {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )
+            )}
+          </div>
+        </CollapsiblePanel>
       )}
     </div>
   );
