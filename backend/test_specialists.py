@@ -1,6 +1,14 @@
 import asyncio
 
-from .agents import optimist, realist, risk_analyst
+from autogen.beta import Agent
+
+from .config import worker_config
+from .models import OptimistOutput, RealistOutput, RiskAnalystOutput
+from .prompts_specialists import (
+    OPTIMIST_PROMPT,
+    REALIST_PROMPT,
+    RISK_ANALYST_PROMPT,
+)
 
 
 SAMPLE_TASK = (
@@ -9,6 +17,25 @@ SAMPLE_TASK = (
     "User has baked as a hobby for 10 years and has a small Instagram following. "
     "Values: creative freedom, work-life balance, building something of their own. "
     "Fears: running out of money, disappointing their partner, failing publicly."
+)
+
+optimist = Agent(
+    name="optimist",
+    prompt=OPTIMIST_PROMPT,
+    config=worker_config,
+    response_schema=OptimistOutput,
+)
+realist = Agent(
+    name="realist",
+    prompt=REALIST_PROMPT,
+    config=worker_config,
+    response_schema=RealistOutput,
+)
+risk_analyst = Agent(
+    name="risk_analyst",
+    prompt=RISK_ANALYST_PROMPT,
+    config=worker_config,
+    response_schema=RiskAnalystOutput,
 )
 
 

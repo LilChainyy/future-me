@@ -1,6 +1,6 @@
 export type AgentStatus = "waiting" | "running" | "complete" | "error";
 
-export interface CaptainBriefing {
+export interface ConsultantBriefing {
   original_question: string;
   decision_type: string;
   context_summary: string;
@@ -77,7 +77,7 @@ export interface PipelineState {
     | "reporter"
     | "complete";
   active_agents: string[];
-  captain_briefing: CaptainBriefing | null;
+  consultant_briefing: ConsultantBriefing | null;
   discussion_transcript: DiscussionMessage[];
   optimist_output: OptimistOutput | null;
   realist_output: RealistOutput | null;

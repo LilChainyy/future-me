@@ -8,13 +8,13 @@ export default function BulletList({ items, title }: Props) {
   return (
     <div>
       {title && (
-        <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-1">
+        <h4 className="mb-1 text-xs font-semibold uppercase tracking-wide text-[var(--fm-clay-deep)]">
           {title}
         </h4>
       )}
       <ul className="space-y-1">
         {items.map((item, i) => (
-          <li key={i} className="text-sm text-zinc-700 dark:text-zinc-300">
+          <li key={i} className="text-sm text-[var(--fm-muted)]">
             &bull; {item}
           </li>
         ))}

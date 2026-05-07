@@ -3,8 +3,8 @@ from typing import Annotated
 from pydantic import BaseModel, Field
 
 
-class CaptainBriefing(BaseModel):
-    """Captain Agent's structured briefing after gathering context from the user."""
+class ConsultantBriefing(BaseModel):
+    """Consultant Agent's structured briefing after gathering context from the user."""
 
     original_question: Annotated[str, Field(description="The user's original decision question, quoted verbatim")]
     decision_type: Annotated[str, Field(description="Category: career, relationship, family, financial, health, relocation, etc.")]
@@ -16,7 +16,7 @@ class CaptainBriefing(BaseModel):
     hopes: Annotated[list[str], Field(description="What the user hopes will happen")]
     fears: Annotated[list[str], Field(description="What the user is afraid of")]
     constraints: Annotated[list[str], Field(description="Hard limits: financial, geographic, time, legal, health")]
-    red_flags: Annotated[list[str], Field(description="Warning signs or concerns the Captain noticed")]
+    red_flags: Annotated[list[str], Field(description="Warning signs or concerns the Consultant noticed")]
     missing_information: Annotated[list[str], Field(description="Important unknowns that could change the analysis")]
     tasks: Annotated[dict[str, str], Field(description="Briefing for each specialist agent, keys: optimist, realist, risk_analyst")]
 

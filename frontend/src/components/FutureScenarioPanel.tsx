@@ -10,24 +10,24 @@ interface Props {
 
 const scenarioStyles: Record<string, { border: string; accent: string; tag: string }> = {
   "Hopeful Future": {
-    border: "border-emerald-300 dark:border-emerald-700",
-    accent: "text-emerald-700 dark:text-emerald-400",
-    tag: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400",
+    border: "border-[color-mix(in_srgb,var(--fm-sage)_55%,var(--fm-border))]",
+    accent: "text-[var(--fm-sage)]",
+    tag: "bg-[color-mix(in_srgb,var(--fm-sage)_18%,transparent)] text-[var(--fm-sage)]",
   },
   "Balanced Future": {
-    border: "border-blue-300 dark:border-blue-700",
-    accent: "text-blue-700 dark:text-blue-400",
-    tag: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
+    border: "border-[color-mix(in_srgb,var(--fm-slate)_50%,var(--fm-border))]",
+    accent: "text-[var(--fm-slate)]",
+    tag: "bg-[color-mix(in_srgb,var(--fm-slate)_16%,transparent)] text-[var(--fm-slate)]",
   },
   "Cautious Future": {
-    border: "border-amber-300 dark:border-amber-700",
-    accent: "text-amber-700 dark:text-amber-400",
-    tag: "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400",
+    border: "border-[color-mix(in_srgb,var(--fm-ochre)_50%,var(--fm-border))]",
+    accent: "text-[var(--fm-ochre)]",
+    tag: "bg-[color-mix(in_srgb,var(--fm-ochre)_18%,transparent)] text-[var(--fm-ochre)]",
   },
   "Unchanged Path": {
-    border: "border-zinc-400 border-dashed dark:border-zinc-500",
-    accent: "text-zinc-600 dark:text-zinc-400",
-    tag: "bg-zinc-200 text-zinc-700 dark:bg-zinc-700 dark:text-zinc-300",
+    border: "border-[var(--fm-border-strong)] border-dashed",
+    accent: "text-[var(--fm-muted)]",
+    tag: "bg-[var(--fm-paper-soft)] text-[var(--fm-muted)]",
   },
 };
 
@@ -39,10 +39,10 @@ export default function FutureScenarioPanel({ data, status, error }: Props) {
 
   return (
     <div
-      className={`rounded-lg border-2 bg-white p-4 dark:bg-zinc-950 ${style.border}`}
+      className={`rounded-lg border-2 bg-[var(--fm-paper)] p-4 shadow-[var(--fm-shadow)] ${style.border}`}
     >
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
+      <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-2">
           <h3 className={`text-sm font-semibold ${style.accent}`}>
             {data?.label ?? "Future Scenario"}
           </h3>
@@ -60,28 +60,28 @@ export default function FutureScenarioPanel({ data, status, error }: Props) {
           {error ?? "Scenario generation failed. The agent encountered an error."}
         </p>
       ) : !data ? (
-        <p className="text-sm text-zinc-400 italic">
+        <p className="text-sm italic text-[var(--fm-muted)]">
           Waiting for future simulation...
         </p>
       ) : (
         <CollapsiblePanel>
           <div className="space-y-3">
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-1">
+              <h4 className="mb-1 text-xs font-semibold uppercase tracking-wide text-[var(--fm-clay-deep)]">
                 Letter from your future self
               </h4>
-              <p className="text-sm text-zinc-700 dark:text-zinc-300 italic whitespace-pre-line">
+              <p className="whitespace-pre-line text-sm italic text-[var(--fm-muted)]">
                 {data.future_self_letter}
               </p>
             </div>
 
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-1">
+              <h4 className="mb-1 text-xs font-semibold uppercase tracking-wide text-[var(--fm-clay-deep)]">
                 Key turning points
               </h4>
               <ul className="space-y-1">
                 {data.key_turning_points.map((t, i) => (
-                  <li key={i} className="text-sm text-zinc-700 dark:text-zinc-300">
+                  <li key={i} className="text-sm text-[var(--fm-muted)]">
                     &bull; {t}
                   </li>
                 ))}
@@ -89,12 +89,12 @@ export default function FutureScenarioPanel({ data, status, error }: Props) {
             </div>
 
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-1">
+              <h4 className="mb-1 text-xs font-semibold uppercase tracking-wide text-[var(--fm-clay-deep)]">
                 Advice from future self
               </h4>
               <ul className="space-y-1">
                 {data.advice_from_future_self.map((a, i) => (
-                  <li key={i} className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                  <li key={i} className="text-sm font-medium text-[var(--fm-ink)]">
                     &ldquo;{a}&rdquo;
                   </li>
                 ))}

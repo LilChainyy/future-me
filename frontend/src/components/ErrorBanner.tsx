@@ -5,7 +5,7 @@ interface Props {
 
 export default function ErrorBanner({ message, onRetry }: Props) {
   return (
-    <div className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
+    <div className="rounded-lg border border-red-200 bg-red-50 p-4 shadow-[var(--fm-shadow)]">
       <div className="flex items-start gap-3">
         <span className="text-red-500 text-sm font-medium flex-shrink-0">
           Error

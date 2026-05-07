@@ -52,7 +52,7 @@ export default function CollapsiblePanel({
         <div ref={contentRef}>{children}</div>
 
         {collapsed && (
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white dark:from-zinc-950 to-transparent pointer-events-none" />
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[var(--fm-paper)] to-transparent pointer-events-none" />
         )}
       </div>
 
@@ -60,7 +60,7 @@ export default function CollapsiblePanel({
         <button
           type="button"
           onClick={() => setIsExpanded(!isExpanded)}
-          className="mt-2 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+          className="mt-2 text-sm font-medium text-[var(--fm-clay-deep)] hover:underline"
         >
           {isExpanded ? "Show less" : "Read more"}
         </button>

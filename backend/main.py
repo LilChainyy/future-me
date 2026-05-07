@@ -4,7 +4,7 @@ import logging
 from autogen.beta import MemoryStream
 from autogen.beta.events import TaskCompleted, TaskFailed, TaskStarted, ToolCallEvent
 
-from .agents import captain
+from .agents import consultant
 
 logging.basicConfig(level=logging.WARNING, format="%(name)s: %(message)s")
 
@@ -43,12 +43,12 @@ async def main() -> None:
         return
 
     try:
-        reply = await captain.ask(question, stream=stream)
+        reply = await consultant.ask(question, stream=stream)
     except Exception as e:
         print(f"\nError starting conversation: {e}")
         return
 
-    print(f"\nCaptain: {reply.body}\n")
+    print(f"\nConsultant: {reply.body}\n")
 
     while True:
         follow_up = input("You: ").strip()
@@ -56,7 +56,7 @@ async def main() -> None:
             break
         try:
             reply = await reply.ask(follow_up, stream=stream)
-            print(f"\nCaptain: {reply.body}\n")
+            print(f"\nConsultant: {reply.body}\n")
         except Exception as e:
             print(f"\nError: {e}")
             print("You can try again or type 'exit' to quit.\n")

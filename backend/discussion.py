@@ -16,6 +16,7 @@ from .models import (
     RealistOutput,
     RiskAnalystOutput,
 )
+from .pipeline_state import default_pipeline_state
 from .prompts_discussion import (
     OPTIMIST_DISCUSSION_PROMPT,
     REALIST_DISCUSSION_PROMPT,
@@ -56,17 +57,7 @@ async def _emit_snapshot(ctx: Context) -> None:
 )
 async def run_specialist_discussion(ctx: Context, briefing_text: str) -> str:
     """Orchestrate specialist discussion and produce structured outputs."""
-    state = ctx.variables.setdefault("pipeline_state", {
-        "current_step": "gathering",
-        "active_agents": [],
-        "captain_briefing": None,
-        "discussion_transcript": [],
-        "optimist_output": None,
-        "realist_output": None,
-        "risk_analyst_output": None,
-        "future_self_output": None,
-        "reporter_output": None,
-    })
+    state = ctx.variables.setdefault("pipeline_state", default_pipeline_state())
 
     state["current_step"] = "discussion"
     state["active_agents"] = ["optimist", "realist", "risk_analyst"]
@@ -190,7 +181,7 @@ async def run_specialist_discussion(ctx: Context, briefing_text: str) -> str:
     state["active_agents"] = []
     await _emit_snapshot(ctx)
 
-    # Return JSON for Captain to pass downstream
+    # Return JSON for the Consultant to pass downstream
     result = {
         "discussion_transcript": transcript,
         "optimist_output": optimist_output.model_dump(),

@@ -4,126 +4,78 @@ import json
 from .agents import future_self
 
 
-MOCK_OPTIMIST = {
-    "summary": "This user has strong foundations for success — a decade of baking experience, savings runway, and a supportive partner.",
-    "best_case_future": "Within 2 years, the bakery becomes a beloved local spot with a loyal customer base. The Instagram following converts into real foot traffic. The user feels creatively fulfilled and works on their own terms.",
-    "positive_signals": [
-        "10 years of baking experience is substantial skill development",
-        "Existing Instagram following provides a marketing foundation",
-        "18 months of savings gives real runway to iterate",
-        "Partner is supportive, even if worried",
-    ],
-    "growth_opportunities": [
-        "Transition from hobbyist to entrepreneur builds new skills",
-        "Creative ownership over a product they love",
-        "Building a community around their craft",
-    ],
-    "relationship_or_life_upside": [
-        "Working together with partner on a shared vision could deepen the relationship",
-        "Flexible schedule could improve work-life balance",
-        "Sense of purpose from building something meaningful",
-    ],
-    "conditions_needed_for_success": [
-        "Start with a low-overhead model (farmers markets, pop-ups) before a lease",
-        "Build a business plan with realistic financial projections",
-        "Partner stays involved and communication stays strong",
-    ],
-    "encouraging_questions": [
-        "What would it mean to you to wake up every day doing work you chose?",
-        "What skills from your corporate career transfer to running a business?",
-    ],
-}
-
-MOCK_REALIST = {
-    "summary": "The decision is feasible but requires careful planning. 18 months of savings is tight for a food business with high startup costs and slow initial revenue.",
-    "most_likely_future": "The first year is harder and more expensive than expected. Revenue starts slow. By month 12, the user has a clearer picture of whether this is viable but has burned through most savings.",
-    "practical_considerations": [
-        "Commercial kitchen rental or food truck lease costs",
-        "Health permits, food safety certification, business licensing",
-        "Ingredient costs, packaging, and equipment investment",
-        "Marketing beyond Instagram — local partnerships, word of mouth",
-    ],
-    "tradeoffs": [
-        "Creative freedom vs. financial stability",
-        "Personal fulfillment vs. predictable income",
-        "Schedule flexibility vs. the reality that bakeries start at 4 AM",
-    ],
-    "open_questions": [
-        "Has the user tested selling at scale (markets, pop-ups)?",
-        "What's the monthly burn rate vs. projected revenue timeline?",
-        "Is there a fallback plan if the bakery doesn't work in 18 months?",
-    ],
-    "near_term_actions": [
-        "Do 4-6 weekend pop-ups to test demand before quitting",
-        "Build a simple business plan with month-by-month financials",
-        "Talk to 2-3 local bakery owners about realistic costs",
-    ],
-    "decision_checkpoints": [
-        "After 3 months: is there repeat customer traction?",
-        "After 9 months: is revenue covering operating costs?",
-        "After 14 months: is there a clear path to sustainability before savings run out?",
-    ],
-}
-
-MOCK_RISK = {
-    "summary": "The main risks are financial runway, relationship strain from financial stress, and the emotional toll of a public venture that might not succeed.",
-    "major_risks": [
-        "18 months of savings may not be enough — food businesses often take 2-3 years to break even",
-        "Partner's worry could become resentment if finances get tight",
-        "Instagram following doesn't guarantee paying customers",
-    ],
-    "red_flags": [
-        "Savings dropping below 6 months of living expenses",
-        "Avoiding honest financial conversations with partner",
-        "Working 80-hour weeks and calling it 'work-life balance'",
-    ],
-    "hidden_costs": [
-        "Emotional cost of leaving a professional identity behind",
-        "Loss of corporate benefits (health insurance, retirement)",
-        "Social friction if friends and family don't take the bakery seriously",
-    ],
-    "failure_modes": [
-        "Undercapitalized: runs out of money before the business is viable",
-        "Burnout: passion turns into exhaustion without corporate boundaries",
-        "Market mismatch: the product doesn't sell at the price point needed",
-    ],
-    "risk_mitigation_steps": [
-        "Keep 6 months of living expenses untouchable as an emergency fund",
-        "Set a clear 'stop date' with partner — if X hasn't happened by month Y, reassess",
-        "Secure health insurance independently before leaving the corporate job",
-    ],
-    "stop_signals": [
-        "Savings below the emergency fund threshold",
-        "Partner expresses they can't continue supporting this path",
-        "No revenue growth for 3 consecutive months after launch",
-    ],
-    "professional_support_recommended": [
-        "Small business accountant for financial planning",
-        "Couples counselor to maintain communication during the transition",
-    ],
+MOCK_SPECIALISTS = {
+    "optimist_output": {
+        "summary": "The user has a real foundation: experience, savings runway, and a supportive partner.",
+        "best_case_future": "Within two years, the bakery has become a small but loved local business. The user feels creatively alive and has learned how to turn craft into sustainable work. Their partner feels included because the transition was planned together.",
+        "positive_signals": [
+            "Ten years of baking experience gives them a strong skill base.",
+            "A small Instagram following provides an initial audience.",
+            "Eighteen months of savings creates room to test carefully.",
+        ],
+        "conditions_needed_for_success": [
+            "Start with low-overhead pop-ups before signing a lease.",
+            "Build realistic month-by-month financial projections.",
+            "Keep partner communication explicit and frequent.",
+        ],
+    },
+    "realist_output": {
+        "summary": "The move is feasible but financially tight for a food business.",
+        "most_likely_future": "The first year is harder and more expensive than expected. The user learns quickly through pop-ups, permits, and customer feedback. By month twelve, they know whether to keep scaling or shift to a hybrid plan.",
+        "practical_considerations": [
+            "Commercial kitchen access, permits, equipment, and insurance need pricing.",
+            "Instagram interest may not convert into reliable revenue.",
+            "A fallback income plan would reduce pressure.",
+        ],
+        "tradeoffs": [
+            "Creative ownership comes with financial uncertainty.",
+            "Flexible self-employment may still mean very early mornings.",
+            "Public pursuit of the dream increases emotional exposure.",
+        ],
+        "open_questions": [
+            "Has demand been tested with paying customers at scale?",
+            "What monthly burn rate can the household tolerate?",
+            "What conditions would trigger a pause or pivot?",
+        ],
+    },
+    "risk_analyst_output": {
+        "summary": "The main risks are runway, relationship strain, and burnout.",
+        "major_risks": [
+            "Savings may fall too quickly if startup costs are underestimated.",
+            "Partner support could weaken if stress replaces shared planning.",
+            "Passion may become exhaustion under full-time business pressure.",
+        ],
+        "hidden_costs": [
+            "Loss of corporate benefits and professional identity.",
+            "Emotional strain of visible failure or slow traction.",
+            "Less personal freedom during the early business phase.",
+        ],
+        "risk_mitigation_steps": [
+            "Keep an untouched emergency fund outside the business budget.",
+            "Set check-in milestones before quitting.",
+            "Test sales through pop-ups and preorders first.",
+        ],
+        "stop_signals": [
+            "Savings drop below the agreed emergency threshold.",
+            "The partner says the plan no longer feels workable.",
+            "Revenue stays flat after several tested sales cycles.",
+        ],
+    },
 }
 
 
 CONTEXT = f"""\
-The user (age 32) is deciding whether to quit their corporate job to start a bakery.
+The user is deciding whether to quit a corporate job to start a bakery.
 They have 18 months of savings, a supportive but worried partner, 10 years of
-baking as a hobby, and a small Instagram following.
+baking experience, and a small Instagram following.
 
 Here are the specialist analyses:
-
-## Optimist Analysis
-{json.dumps(MOCK_OPTIMIST, indent=2)}
-
-## Realist Analysis
-{json.dumps(MOCK_REALIST, indent=2)}
-
-## Risk Analyst Analysis
-{json.dumps(MOCK_RISK, indent=2)}
+{json.dumps(MOCK_SPECIALISTS, indent=2)}
 """
 
 
 async def main() -> None:
-    print("Testing Future Self Agent with mock specialist outputs...")
+    print("Testing Future Self Agent with current specialist schemas...")
     print("=" * 50)
 
     reply = await future_self.ask(CONTEXT)
@@ -137,19 +89,12 @@ async def main() -> None:
         print(f"Weights: {scenario.weights}")
         print(f"{'=' * 50}")
         print(f"\nFuture-self letter:\n{scenario.future_self_letter}")
-        print(f"\nWhat life feels like:\n{scenario.what_life_feels_like}")
-        print(f"\nLikely rewards:")
-        for r in scenario.likely_rewards:
-            print(f"  - {r}")
-        print(f"\nLikely regrets:")
-        for r in scenario.likely_regrets:
-            print(f"  - {r}")
-        print(f"\nKey turning points:")
-        for t in scenario.key_turning_points:
-            print(f"  - {t}")
-        print(f"\nAdvice from future self:")
-        for a in scenario.advice_from_future_self:
-            print(f"  - {a}")
+        print("\nKey turning points:")
+        for turning_point in scenario.key_turning_points:
+            print(f"  - {turning_point}")
+        print("\nAdvice from future self:")
+        for advice in scenario.advice_from_future_self:
+            print(f"  - {advice}")
 
     print(f"\n{'=' * 50}")
     print("All 4 scenarios parsed successfully.")

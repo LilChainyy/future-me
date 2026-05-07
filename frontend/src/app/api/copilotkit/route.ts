@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8008";
 const agent = new HttpAgent({ url: `${backendUrl}/chat` });
-const runtime = new CopilotRuntime({ agents: { captain: agent } });
+const runtime = new CopilotRuntime({ agents: { consultant: agent } });
 
 export async function POST(req: NextRequest) {
   try {

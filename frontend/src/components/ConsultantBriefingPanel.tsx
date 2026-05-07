@@ -1,20 +1,20 @@
-import type { CaptainBriefing, AgentStatus } from "@/types";
+import type { AgentStatus, ConsultantBriefing } from "@/types";
 import StatusBadge from "./StatusBadge";
 import CollapsiblePanel from "./CollapsiblePanel";
 import BulletList from "./BulletList";
 
 interface Props {
-  data: CaptainBriefing | null;
+  data: ConsultantBriefing | null;
   status: AgentStatus;
   error?: string | null;
 }
 
-export default function CaptainBriefingPanel({ data, status, error }: Props) {
+export default function ConsultantBriefingPanel({ data, status, error }: Props) {
   return (
-    <div className="rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
+    <div className="rounded-lg border border-[var(--fm-border)] bg-[var(--fm-paper)] p-4 shadow-[var(--fm-shadow)]">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-          Captain Briefing
+        <h3 className="text-sm font-semibold text-[var(--fm-ink)]">
+          What I&apos;m hearing
         </h3>
         <StatusBadge status={status} />
       </div>
@@ -23,21 +23,21 @@ export default function CaptainBriefingPanel({ data, status, error }: Props) {
           {error ?? "Context gathering failed. The agent encountered an error."}
         </p>
       ) : !data ? (
-        <p className="text-sm text-zinc-400 italic">
-          Waiting for context gathering...
+        <p className="text-sm italic text-[var(--fm-muted)]">
+          Share what&apos;s been on your mind to begin.
         </p>
       ) : (
         <CollapsiblePanel>
           <div className="space-y-3">
             <div>
-              <p className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
+              <p className="text-sm font-medium text-[var(--fm-ink)]">
                 &ldquo;{data.original_question}&rdquo;
               </p>
-              <p className="text-xs text-zinc-500 mt-1">
+              <p className="mt-1 text-xs text-[var(--fm-muted)]">
                 Type: {data.decision_type}
               </p>
             </div>
-            <p className="text-sm text-zinc-700 dark:text-zinc-300">
+            <p className="text-sm text-[var(--fm-muted)]">
               {data.context_summary}
             </p>
             <BulletList title="Values" items={data.user_values} />

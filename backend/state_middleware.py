@@ -1,4 +1,3 @@
-import json
 import logging
 from datetime import datetime, timezone
 
@@ -13,6 +12,7 @@ from .models import (
     FutureSelfOutput,
     ReporterOutput,
 )
+from .pipeline_state import default_pipeline_state
 
 logger = logging.getLogger("futureme.state")
 
@@ -20,19 +20,6 @@ TOOL_CONFIG: dict[str, tuple[str, type, str]] = {
     "task_future_self": ("future_self_output", FutureSelfOutput, "future_self"),
     "task_reporter": ("reporter_output", ReporterOutput, "reporter"),
 }
-
-_DEFAULT_STATE = {
-    "current_step": "gathering",
-    "active_agents": [],
-    "captain_briefing": None,
-    "discussion_transcript": [],
-    "optimist_output": None,
-    "realist_output": None,
-    "risk_analyst_output": None,
-    "future_self_output": None,
-    "reporter_output": None,
-}
-
 
 def _timestamp() -> int:
     return int(datetime.now(timezone.utc).timestamp() * 1000)
@@ -76,9 +63,7 @@ def make_state_middleware(tool_name: str):
         event: ToolCallEvent,
         ctx: Context,
     ) -> ToolResultType:
-        state = ctx.variables.setdefault(
-            "pipeline_state", {**_DEFAULT_STATE, "active_agents": []}
-        )
+        state = ctx.variables.setdefault("pipeline_state", default_pipeline_state())
 
         # Mark agent as running
         state["current_step"] = step

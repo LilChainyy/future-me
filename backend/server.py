@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 
 from autogen.beta.ag_ui import AGUIStream
 
-from .agents import captain
+from .agents import consultant
 
 logging.basicConfig(level=logging.INFO, format="%(name)s: %(message)s")
 logger = logging.getLogger("futureme.server")
@@ -26,7 +26,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-stream = AGUIStream(captain)
+stream = AGUIStream(consultant)
 app.mount("/chat", stream.build_asgi())
 
 

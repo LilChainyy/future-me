@@ -1,6 +1,10 @@
 import asyncio
 
-from .agents import optimist
+from autogen.beta import Agent
+
+from .config import worker_config
+from .models import OptimistOutput
+from .prompts_specialists import OPTIMIST_PROMPT
 
 
 SAMPLE_TASK = (
@@ -8,6 +12,13 @@ SAMPLE_TASK = (
     "User is 32, has 18 months of savings, partner is supportive but worried. "
     "User has baked as a hobby for 10 years and has a small Instagram following. "
     "Values: creative freedom, work-life balance, building something of their own."
+)
+
+optimist = Agent(
+    name="optimist",
+    prompt=OPTIMIST_PROMPT,
+    config=worker_config,
+    response_schema=OptimistOutput,
 )
 
 
@@ -21,14 +32,11 @@ async def main() -> None:
     print("=" * 40)
 
     parsed = await reply.content()
-    print(f"Parsed OptimistOutput:\n")
+    print("Parsed OptimistOutput:\n")
     print(f"Summary: {parsed.summary}\n")
     print(f"Best-case future: {parsed.best_case_future}\n")
     print(f"Positive signals: {parsed.positive_signals}\n")
-    print(f"Growth opportunities: {parsed.growth_opportunities}\n")
-    print(f"Relationship/life upside: {parsed.relationship_or_life_upside}\n")
     print(f"Conditions for success: {parsed.conditions_needed_for_success}\n")
-    print(f"Encouraging questions: {parsed.encouraging_questions}\n")
 
 
 if __name__ == "__main__":

@@ -10,12 +10,13 @@ from autogen.beta.tools.subagents import subagent_tool
 
 from .config import lead_config
 from .models import (
-    CaptainBriefing,
+    ConsultantBriefing,
     FutureSelfOutput,
     ReporterOutput,
 )
+from .pipeline_state import default_pipeline_state
 from .discussion import run_specialist_discussion
-from .prompts_captain import CAPTAIN_PROMPT
+from .prompts_consultant import CONSULTANT_PROMPT
 from .prompts_specialists import (
     FUTURE_SELF_PROMPT,
     REPORTER_PROMPT,
@@ -49,7 +50,7 @@ async def save_briefing(
     red_flags: list[str],
     missing_information: list[str],
 ) -> str:
-    briefing = CaptainBriefing(
+    briefing = ConsultantBriefing(
         original_question=original_question,
         decision_type=decision_type,
         context_summary=context_summary,
@@ -64,18 +65,8 @@ async def save_briefing(
         missing_information=missing_information,
         tasks={},
     )
-    state = ctx.variables.setdefault("pipeline_state", {
-        "current_step": "gathering",
-        "active_agents": [],
-        "captain_briefing": None,
-        "discussion_transcript": [],
-        "optimist_output": None,
-        "realist_output": None,
-        "risk_analyst_output": None,
-        "future_self_output": None,
-        "reporter_output": None,
-    })
-    state["captain_briefing"] = briefing.model_dump()
+    state = ctx.variables.setdefault("pipeline_state", default_pipeline_state())
+    state["consultant_briefing"] = briefing.model_dump()
     state["current_step"] = "specialists"
     await ctx.send(
         AGUIEvent(
@@ -102,9 +93,9 @@ reporter = Agent(
     response_schema=ReporterOutput,
 )
 
-captain = Agent(
-    name="captain",
-    prompt=CAPTAIN_PROMPT,
+consultant = Agent(
+    name="consultant",
+    prompt=CONSULTANT_PROMPT,
     config=lead_config,
     tools=[
         save_briefing,

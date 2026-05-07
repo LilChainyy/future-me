@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import ChatInterface from "@/components/ChatInterface";
-import CaptainBriefingPanel from "@/components/CaptainBriefingPanel";
+import Logo from "@/components/Logo";
+import ConsultantBriefingPanel from "@/components/ConsultantBriefingPanel";
 import DiscussionPanel from "@/components/DiscussionPanel";
-import AgentPanel from "@/components/AgentPanel";
+import SpecialistPanels from "@/components/SpecialistPanels";
 import FutureScenarioPanel from "@/components/FutureScenarioPanel";
 import ReportPanel from "@/components/ReportPanel";
 import ErrorBanner from "@/components/ErrorBanner";
@@ -16,8 +17,8 @@ export default function Home() {
   const [backendError, setBackendError] = useState<string | null>(null);
 
   const {
-    captainBriefing,
-    captainBriefingStatus,
+    consultantBriefing,
+    consultantBriefingStatus,
     activeAgents,
     discussionTranscript,
     discussionStatus,
@@ -34,29 +35,39 @@ export default function Home() {
   } = usePipelineState();
 
   useEffect(() => {
-    fetch("/api/copilotkit", { method: "HEAD" }).catch(() => {
-      fetch(`${BACKEND_URL}/healthz`)
-        .then((r) => {
-          if (!r.ok) throw new Error();
-        })
-        .catch(() => {
+    let cancelled = false;
+
+    fetch(`${BACKEND_URL}/healthz`)
+      .then((r) => {
+        if (!r.ok) throw new Error();
+        if (!cancelled) setBackendError(null);
+      })
+      .catch(() => {
+        if (!cancelled) {
           setBackendError(
             "Cannot reach the backend server. Make sure it's running: python -m uvicorn backend.server:app --port 8008"
           );
-        });
-    });
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex min-h-screen flex-col bg-[var(--fm-page)] lg:h-screen">
       {/* Header */}
-      <header className="border-b border-zinc-200 bg-white px-6 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-        <h1 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-          futureMe
-        </h1>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          Simulate possible futures for your life decisions
-        </p>
+      <header className="flex items-center gap-3 border-b border-[var(--fm-border)] bg-[var(--fm-paper)] px-6 py-3">
+        <Logo size={32} className="flex-shrink-0" />
+        <div className="flex flex-col leading-tight">
+          <h1 className="text-2xl font-semibold tracking-tight text-[var(--fm-ink)]">
+            futureMe
+          </h1>
+          <p className="text-xs text-[var(--fm-muted)]">
+            A reflective space for decisions that may shape your future
+          </p>
+        </div>
       </header>
 
       {/* Connection error banner */}
@@ -81,18 +92,18 @@ export default function Home() {
       )}
 
       {/* Main split layout */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-visible lg:flex-row lg:overflow-hidden">
         {/* Left: Chat */}
-        <div className="w-[420px] min-w-[360px] flex-shrink-0 overflow-y-auto">
+        <div className="h-[45vh] min-h-[380px] w-full flex-shrink-0 overflow-y-auto lg:h-auto lg:w-[420px] lg:min-w-[360px]">
           <ChatInterface />
         </div>
 
         {/* Right: Scrollable panels */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-zinc-50 dark:bg-zinc-900">
-          {/* Captain Briefing */}
-          <CaptainBriefingPanel
-            data={captainBriefing}
-            status={captainBriefingStatus}
+        <div className="flex-1 space-y-6 overflow-y-auto bg-[var(--fm-page)] p-4 sm:p-6">
+          {/* Consultant Briefing */}
+          <ConsultantBriefingPanel
+            data={consultantBriefing}
+            status={consultantBriefingStatus}
           />
 
           {/* Specialist Discussion */}
@@ -103,58 +114,17 @@ export default function Home() {
           />
 
           {/* Three specialists side by side (final structured outputs) */}
-          <div className="grid grid-cols-3 gap-4">
-            <AgentPanel
-              title="Optimist"
-              color="bg-emerald-500"
-              status={optimistStatus}
-              summary={optimistOutput?.summary ?? null}
-              sections={
-                optimistOutput
-                  ? [
-                      { label: "Best Case Future", items: [optimistOutput.best_case_future] },
-                      { label: "Positive Signals", items: optimistOutput.positive_signals },
-                      { label: "Conditions for Success", items: optimistOutput.conditions_needed_for_success },
-                    ]
-                  : []
-              }
-            />
-            <AgentPanel
-              title="Realist"
-              color="bg-blue-500"
-              status={realistStatus}
-              summary={realistOutput?.summary ?? null}
-              sections={
-                realistOutput
-                  ? [
-                      { label: "Most Likely Future", items: [realistOutput.most_likely_future] },
-                      { label: "Practical Considerations", items: realistOutput.practical_considerations },
-                      { label: "Tradeoffs", items: realistOutput.tradeoffs },
-                      { label: "Open Questions", items: realistOutput.open_questions },
-                    ]
-                  : []
-              }
-            />
-            <AgentPanel
-              title="Risk Analyst"
-              color="bg-amber-500"
-              status={riskAnalystStatus}
-              summary={riskAnalystOutput?.summary ?? null}
-              sections={
-                riskAnalystOutput
-                  ? [
-                      { label: "Major Risks", items: riskAnalystOutput.major_risks },
-                      { label: "Hidden Costs", items: riskAnalystOutput.hidden_costs },
-                      { label: "Risk Mitigation", items: riskAnalystOutput.risk_mitigation_steps },
-                      { label: "Stop Signals", items: riskAnalystOutput.stop_signals },
-                    ]
-                  : []
-              }
-            />
-          </div>
+          <SpecialistPanels
+            optimistOutput={optimistOutput}
+            optimistStatus={optimistStatus}
+            realistOutput={realistOutput}
+            realistStatus={realistStatus}
+            riskAnalystOutput={riskAnalystOutput}
+            riskAnalystStatus={riskAnalystStatus}
+          />
 
           {/* Four scenarios in 2x2 grid */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
             {scenarios.map((scenario, i) => (
               <FutureScenarioPanel
                 key={i}

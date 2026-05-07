@@ -20,9 +20,9 @@ export default function AgentPanel({
   error,
 }: Props) {
   return (
-    <div className="rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
+    <div className="rounded-lg border border-[var(--fm-border)] bg-[var(--fm-paper)] p-4 shadow-[var(--fm-shadow)]">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+        <h3 className="text-sm font-semibold text-[var(--fm-ink)]">
           <span className={`inline-block w-2 h-2 rounded-full mr-2 ${color}`} />
           {title}
         </h3>
@@ -33,23 +33,23 @@ export default function AgentPanel({
           {error ?? "Analysis failed. The agent encountered an error."}
         </p>
       ) : !summary ? (
-        <p className="text-sm text-zinc-400 italic">Waiting for analysis...</p>
+        <p className="text-sm italic text-[var(--fm-muted)]">Waiting for analysis...</p>
       ) : (
         <CollapsiblePanel>
           <div className="space-y-3">
-            <p className="text-sm text-zinc-700 dark:text-zinc-300">{summary}</p>
+            <p className="text-sm text-[var(--fm-muted)]">{summary}</p>
             {sections.map(
               (section) =>
                 section.items.length > 0 && (
                   <div key={section.label}>
-                    <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-1">
+                    <h4 className="mb-1 text-xs font-semibold uppercase tracking-wide text-[var(--fm-clay-deep)]">
                       {section.label}
                     </h4>
                     <ul className="space-y-1">
                       {section.items.map((item, i) => (
                         <li
                           key={i}
-                          className="text-sm text-zinc-700 dark:text-zinc-300"
+                          className="text-sm text-[var(--fm-muted)]"
                         >
                           &bull; {item}
                         </li>

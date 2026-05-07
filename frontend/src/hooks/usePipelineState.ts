@@ -11,7 +11,7 @@ import type {
 const INITIAL_STATE: PipelineState = {
   current_step: "gathering",
   active_agents: [],
-  captain_briefing: null,
+  consultant_briefing: null,
   discussion_transcript: [],
   optimist_output: null,
   realist_output: null,
@@ -36,13 +36,13 @@ function deriveStatus(
 
 export function usePipelineState() {
   const { state, running } = useCoAgent<CoAgentState>({
-    name: "captain",
+    name: "consultant",
     initialState: {},
   });
 
   const ps = state?.pipeline_state ?? INITIAL_STATE;
 
-  const captainBriefingStatus: AgentStatus = ps.captain_briefing
+  const consultantBriefingStatus: AgentStatus = ps.consultant_briefing
     ? "complete"
     : running
       ? "running"
@@ -89,8 +89,8 @@ export function usePipelineState() {
     pipelineState: ps,
     running,
     activeAgents: ps.active_agents,
-    captainBriefing: ps.captain_briefing,
-    captainBriefingStatus,
+    consultantBriefing: ps.consultant_briefing,
+    consultantBriefingStatus,
     discussionTranscript,
     discussionStatus,
     optimistOutput: ps.optimist_output,

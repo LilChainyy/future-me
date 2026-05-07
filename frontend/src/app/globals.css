@@ -1,8 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fbf6f1;
+  --foreground: #332621;
+  --fm-page: #f7eee8;
+  --fm-surface: #fffaf5;
+  --fm-paper: #fffdf9;
+  --fm-paper-soft: #fdf2ea;
+  --fm-border: #ead8cb;
+  --fm-border-strong: #d8b8a6;
+  --fm-ink: #332621;
+  --fm-muted: #7b665c;
+  --fm-clay: #b56f52;
+  --fm-clay-deep: #8f4f3b;
+  --fm-rose: #c7837f;
+  --fm-sage: #78966f;
+  --fm-slate: #687d8a;
+  --fm-ochre: #bd8a45;
+  --fm-shadow: 0 18px 45px rgba(95, 62, 44, 0.08);
+  --copilot-kit-primary-color: var(--fm-clay);
+  --copilot-kit-background-color: var(--fm-paper);
+  --copilot-kit-input-background-color: var(--fm-surface);
+  --copilot-kit-contrast-color: #fffaf5;
+  --copilot-kit-secondary-contrast-color: var(--fm-ink);
+  --copilot-kit-muted-color: var(--fm-muted);
+  --copilot-kit-separator-color: var(--fm-border);
 }
 
 @theme inline {
@@ -14,13 +36,99 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #211915;
+    --foreground: #f8eee5;
+    --fm-page: #211915;
+    --fm-surface: #2c221d;
+    --fm-paper: #342822;
+    --fm-paper-soft: #3c2d26;
+    --fm-border: #5a4035;
+    --fm-border-strong: #7c5545;
+    --fm-ink: #f8eee5;
+    --fm-muted: #d3b9aa;
+    --fm-clay: #d28b6c;
+    --fm-clay-deep: #f0b093;
+    --fm-rose: #d79a96;
+    --fm-sage: #9fb48f;
+    --fm-slate: #9eb2bd;
+    --fm-ochre: #d6a95d;
+    --fm-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+.futureme-chat {
+  color: var(--fm-ink);
+}
+
+.futureme-chat .copilotKitHeader {
+  background: var(--fm-paper);
+  border-color: var(--fm-border);
+  color: var(--fm-ink);
+}
+
+.futureme-chat .copilotKitMessages,
+.futureme-chat .copilotKitMessagesContainer {
+  background: var(--fm-paper);
+}
+
+.futureme-chat .copilotKitMessage.copilotKitAssistantMessage {
+  background: var(--fm-paper-soft);
+  border: 1px solid var(--fm-border);
+  color: var(--fm-ink);
+  /* Override CopilotKit's padding-left: 0 default — our tinted bubble
+   * needs symmetric horizontal padding so text doesn't hug the frame.
+   * Use longhand on padding-left to defeat CopilotKit's longhand override. */
+  padding: 14px 18px;
+  padding-left: 20px;
+}
+
+.futureme-chat .copilotKitMessage.copilotKitUserMessage {
+  background: var(--fm-clay);
+  color: var(--fm-surface);
+}
+
+.futureme-chat .copilotKitInput,
+.futureme-chat textarea {
+  background: var(--fm-surface);
+  color: var(--fm-ink);
+}
+
+.futureme-chat .suggestions .suggestion {
+  border-color: var(--fm-border-strong);
+  background: var(--fm-surface);
+  color: var(--fm-clay-deep);
+}
+
+.futureme-chat .suggestions .suggestion:hover {
+  background: var(--fm-paper-soft);
+  border-color: var(--fm-clay);
+}
+
+/* Chat bubble + action-icon spacing.
+ * Goal: airy gap between the bubble and its action row so the icons clearly
+ * belong to that bubble; tighter gap between adjacent icons so they read as
+ * one cluster. */
+.futureme-chat
+  .copilotKitMessage.copilotKitAssistantMessage
+  .copilotKitMessageControls {
+  gap: 0.4rem;
+  padding-top: 20px;
+}
+
+.futureme-chat .copilotKitMessageControlButton {
+  padding: 2px;
+}
+
+/* Push the next user message down a bit more to make room for the action
+ * row sitting in the gap. */
+.futureme-chat
+  .copilotKitMessage.copilotKitAssistantMessage
+  + .copilotKitMessage.copilotKitUserMessage {
+  margin-top: 2.75rem;
 }

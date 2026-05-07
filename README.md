@@ -6,15 +6,16 @@ Built with [AG2 Beta](https://docs.ag2.ai/latest/docs/beta/motivation/) (agent o
 
 ## How It Works
 
-1. **Captain** gathers context through conversation — your situation, values, hopes, fears, constraints.
-2. Three specialists run **in parallel**:
+1. **Consultant** gathers context through conversation — your situation, values, hopes, fears, constraints.
+2. **Specialist Discussion** runs two rounds of live deliberation:
    - **Optimist** — what could go right
    - **Realist** — what will probably happen
    - **Risk Analyst** — what could go wrong and how to prepare
-3. **Future Self** synthesizes four scenarios: Hopeful, Balanced, Cautious, and Unchanged Path.
-4. **Reporter** produces a final decision-support report with themes, uncertainties, and reflection questions.
+3. The specialists produce their final structured analyses **in parallel** after the discussion transcript exists.
+4. **Future Self** synthesizes four scenarios: Hopeful, Balanced, Cautious, and Unchanged Path.
+5. **Reporter** produces a final decision-support report with themes, uncertainties, and reflection questions.
 
-No agent tells you what to do. They help you see clearly.
+No agent tells you what to do. They help you see clearly. The chat starts with warm example prompts for decisions like relationships, work, relocation, and whether to stay or begin again.
 
 ## Setup
 
@@ -61,7 +62,20 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The left panel is the chat interface; the right panel shows agent outputs as they arrive.
+Open [http://localhost:3000](http://localhost:3000). The left panel is the Consultant chat interface; the right panel shows the live pipeline as it arrives: Consultant briefing, specialist discussion, final specialist outputs, future scenarios, and final report.
+
+### Verification
+
+```bash
+# Backend syntax check
+python -m compileall backend
+
+# Frontend checks
+cd frontend && npm run lint
+cd frontend && npm run build
+```
+
+The `backend/test_*.py` scripts are LLM-backed smoke scripts. They require a configured OpenRouter key and network access, so they are not part of the default local verification loop.
 
 ## Project Structure
 
@@ -69,16 +83,20 @@ Open [http://localhost:3000](http://localhost:3000). The left panel is the chat 
 backend/
 ├── config.py              # Model configs (Gemini 2.5 Pro/Flash via OpenRouter)
 ├── models.py              # Pydantic models for structured agent output
-├── prompts_captain.py     # Captain agent system prompt
-├── prompts_specialists.py # All specialist + synthesis agent prompts
-├── agents.py              # Agent definitions + subagent_tool() delegation
+├── prompts_consultant.py  # Consultant agent system prompt
+├── prompts_discussion.py  # Free-text specialist discussion prompts
+├── prompts_specialists.py # Structured specialist + synthesis agent prompts
+├── agents.py              # Consultant, Future Self, Reporter, and tool wiring
+├── discussion.py          # 2-round discussion + final parallel specialist pass
+├── pipeline_state.py      # Shared pipeline state shape
+├── state_middleware.py    # AG-UI state snapshots for subagent tools
 ├── errors.py              # Retry logic for structured output parsing
 ├── main.py                # CLI runner with streaming events
 └── server.py              # FastAPI + AG-UI SSE endpoint
 
 frontend/src/
 ├── app/                   # Next.js app router (API route, layout, page)
-├── components/            # UI panels for each agent stage
+├── components/            # UI panels and responsive pipeline wrappers
 └── types.ts               # TypeScript types matching backend models
 ```
 

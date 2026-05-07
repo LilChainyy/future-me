@@ -7,16 +7,16 @@ import StatusBadge from "./StatusBadge";
 
 const SPEAKER_STYLES: Record<string, { badge: string; bg: string }> = {
   optimist: {
-    badge: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
-    bg: "bg-emerald-50 dark:bg-emerald-950/30",
+    badge: "bg-[color-mix(in_srgb,var(--fm-sage)_18%,transparent)] text-[var(--fm-sage)]",
+    bg: "bg-[color-mix(in_srgb,var(--fm-sage)_10%,var(--fm-paper))]",
   },
   realist: {
-    badge: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-    bg: "bg-blue-50 dark:bg-blue-950/30",
+    badge: "bg-[color-mix(in_srgb,var(--fm-slate)_16%,transparent)] text-[var(--fm-slate)]",
+    bg: "bg-[color-mix(in_srgb,var(--fm-slate)_9%,var(--fm-paper))]",
   },
   risk_analyst: {
-    badge: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
-    bg: "bg-amber-50 dark:bg-amber-950/30",
+    badge: "bg-[color-mix(in_srgb,var(--fm-ochre)_18%,transparent)] text-[var(--fm-ochre)]",
+    bg: "bg-[color-mix(in_srgb,var(--fm-ochre)_10%,var(--fm-paper))]",
   },
 };
 
@@ -70,16 +70,16 @@ export default function DiscussionPanel({ transcript, status, activeAgents }: Pr
   const latestIsNew = transcript.length > 0 && transcript.length - 1 >= seenCount;
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950">
+    <div className="rounded-xl border border-[var(--fm-border)] bg-[var(--fm-paper)] p-5 shadow-[var(--fm-shadow)]">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+        <h2 className="text-sm font-semibold text-[var(--fm-ink)]">
           Specialist Discussion
         </h2>
         <StatusBadge status={status} />
       </div>
 
       {transcript.length === 0 && status === "waiting" && (
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-sm text-[var(--fm-muted)]">
           Waiting for specialists to begin discussing...
         </p>
       )}
@@ -95,11 +95,11 @@ export default function DiscussionPanel({ transcript, status, activeAgents }: Pr
               {/* Round divider */}
               {i === round2StartIdx && (
                 <div className="flex items-center gap-3 my-4">
-                  <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-700" />
-                  <span className="text-[11px] font-medium text-zinc-400 dark:text-zinc-500 whitespace-nowrap">
+                  <div className="flex-1 h-px bg-[var(--fm-border)]" />
+                  <span className="text-[11px] font-medium text-[var(--fm-muted)] whitespace-nowrap">
                     Round 2 · Cross-Examination
                   </span>
-                  <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-700" />
+                  <div className="flex-1 h-px bg-[var(--fm-border)]" />
                 </div>
               )}
               <StreamingMessageBubble
@@ -143,10 +143,10 @@ function StreamingMessageBubble({
         {label}
       </span>
       <div className={`rounded-lg px-3 py-2 ${style.bg} flex-1`}>
-        <p className="text-sm text-zinc-700 dark:text-zinc-300">
+        <p className="text-sm text-[var(--fm-muted)]">
           {displayText}
           {isStreaming && (
-            <span className="inline-block ml-0.5 animate-pulse text-zinc-400">▊</span>
+            <span className="inline-block ml-0.5 animate-pulse text-[var(--fm-clay)]">▊</span>
           )}
         </p>
       </div>
@@ -165,11 +165,11 @@ function TypingIndicator({ agentName }: { agentName: string }) {
       >
         {label}
       </span>
-      <div className="flex items-center gap-1.5 text-xs text-zinc-400 dark:text-zinc-500">
+      <div className="flex items-center gap-1.5 text-xs text-[var(--fm-muted)]">
         <span className="flex gap-0.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500 animate-bounce [animation-delay:0ms]" />
-          <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500 animate-bounce [animation-delay:150ms]" />
-          <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500 animate-bounce [animation-delay:300ms]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--fm-clay)] animate-bounce [animation-delay:0ms]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--fm-clay)] animate-bounce [animation-delay:150ms]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--fm-clay)] animate-bounce [animation-delay:300ms]" />
         </span>
         <span>is thinking...</span>
       </div>
